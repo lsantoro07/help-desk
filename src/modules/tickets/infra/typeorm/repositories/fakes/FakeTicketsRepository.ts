@@ -17,6 +17,21 @@ class TicketRepository implements ITicketsRepository {
 
     return ticket;
   }
+
+  public async findTicketById(ticket_id: string): Promise<Ticket | undefined> {
+    const ticket = this.tickets.find(findTicket => findTicket.id === ticket_id);
+
+    return ticket;
+  }
+
+  public async save(ticket: Ticket): Promise<Ticket> {
+    const index = this.tickets.findIndex(
+      findTicket => findTicket.id === ticket.id,
+    );
+
+    this.tickets[index] = ticket;
+    return ticket;
+  }
 }
 
 export default TicketRepository;
