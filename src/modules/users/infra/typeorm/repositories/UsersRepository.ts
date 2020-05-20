@@ -1,4 +1,4 @@
-import { Repository, getRepository } from 'typeorm';
+import { Repository, getRepository, Not } from 'typeorm';
 
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -55,6 +55,17 @@ class UsersRepository implements IUsersRepository {
 
   public async deleteUser(user: User): Promise<void> {
     await this.ormRepository.remove(user);
+  }
+
+  public async findAllAgents(): Promise<User[] | undefined> {
+    const agents = await this.ormRepository.find({
+      select: ['email'],
+      where: {
+        role: Not('user'),
+      },
+    });
+
+    return agents;
   }
 }
 

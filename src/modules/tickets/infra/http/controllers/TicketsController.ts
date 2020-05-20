@@ -7,14 +7,15 @@ export default class TicketsController {
   public async create(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
-    const { title, article } = request.body;
+    const { title } = request.body;
+    const { description } = request.body.article;
 
     const createTicket = container.resolve(CreateTicketService);
 
     const ticket = await createTicket.execute({
       user_id,
       title,
-      article,
+      description,
     });
 
     return response.json(ticket);

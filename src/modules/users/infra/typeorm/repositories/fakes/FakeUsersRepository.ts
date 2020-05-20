@@ -52,6 +52,12 @@ class FakeUsersRepository implements IUsersRepository {
 
     this.users.splice(findIndex, 1);
   }
+
+  public async findAllAgents(): Promise<User[] | undefined> {
+    const findAgents = this.users.filter(user => user.role !== 'user');
+
+    return findAgents;
+  }
 }
 
 export default FakeUsersRepository;
