@@ -3,34 +3,27 @@ import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '@modules/users/infra/typeorm/repositories/fakes/FakeUsersRepository';
 
 import FakeTicketRepository from '../infra/typeorm/repositories/fakes/FakeTicketsRepository';
-import ChangeTicketResponsableService from './ChangeTicketResponsableService';
+import ShowTicketInfoService from './ShowTicketInfoService';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeTicketRepository: FakeTicketRepository;
-let changeResponsabile: ChangeTicketResponsableService;
-describe('ChangeResponsable', () => {
+let showTicket: ShowTicketInfoService;
+describe('ShowTicket', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeTicketRepository = new FakeTicketRepository();
-    changeResponsabile = new ChangeTicketResponsableService(
+    showTicket = new ShowTicketInfoService(
       fakeTicketRepository,
       fakeUsersRepository,
     );
   });
 
-  it('should be able to change the responsabile of a ticket', async () => {
+  it('should be able to show the ticket information', async () => {
     const user = await fakeUsersRepository.create({
       name: 'Jonh Doe',
       email: 'jonhdoe@example.com',
       password: '123456',
       role: 'user',
-    });
-
-    const agent = await fakeUsersRepository.create({
-      name: 'Jonh Tre',
-      email: 'jonhtre@example.com',
-      password: '123456',
-      role: 'agent',
     });
 
     const ticket = await fakeTicketRepository.create({
@@ -40,15 +33,45 @@ describe('ChangeResponsable', () => {
       articles: [],
     });
 
-    const updatedTicket = await changeResponsabile.execute({
-      agent_id: agent.id,
+    const ticketInfo = await showTicket.execute({
+      user_id: user.id,
       ticket_id: ticket.id,
     });
 
-    expect(updatedTicket.responsible.id).toEqual(agent.id);
+    expect(ticketInfo).toEqual(ticket);
   });
 
-  it('should not be able to change the responsabile of a ticket for an agent that not exists', async () => {
+  it('should not be able to show the ticket information when the user is not the owner nor an agent or responsable', async () => {
+    const user = await fakeUsersRepository.create({
+      name: 'Jonh Doe',
+      email: 'jonhdoe@example.com',
+      password: '123456',
+      role: 'user',
+    });
+
+    const user2 = await fakeUsersRepository.create({
+      name: 'Jonh Doe',
+      email: 'jonhdoe@example.com',
+      password: '123456',
+      role: 'user',
+    });
+
+    const ticket = await fakeTicketRepository.create({
+      user,
+      title: 'New Ticket',
+      status: 'open',
+      articles: [],
+    });
+
+    await expect(
+      showTicket.execute({
+        user_id: user2.id,
+        ticket_id: ticket.id,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to show the ticket information when the user not exists', async () => {
     const user = await fakeUsersRepository.create({
       name: 'Jonh Doe',
       email: 'jonhdoe@example.com',
@@ -64,48 +87,25 @@ describe('ChangeResponsable', () => {
     });
 
     await expect(
-      changeResponsabile.execute({
-        agent_id: 'non-existing-user',
+      showTicket.execute({
+        user_id: 'non-existing-user',
         ticket_id: ticket.id,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to change the responsabile of a ticket that not exists', async () => {
-    const agent = await fakeUsersRepository.create({
-      name: 'Jonh Tre',
-      email: 'jonhtre@example.com',
+  it('should not be able to show the ticket that not exists', async () => {
+    const user = await fakeUsersRepository.create({
+      name: 'Jonh Doe',
+      email: 'jonhdoe@example.com',
       password: '123456',
-      role: 'agent',
+      role: 'user',
     });
 
     await expect(
-      changeResponsabile.execute({
-        agent_id: agent.id,
+      showTicket.execute({
+        user_id: user.id,
         ticket_id: 'non-existing-ticket',
-      }),
-    ).rejects.toBeInstanceOf(AppError);
-  });
-
-  it('should not be able to change the responsabile of a ticket to an user', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'Jonh Doe',
-      email: 'jonhdoe@example.com',
-      password: '123456',
-      role: 'user',
-    });
-
-    const ticket = await fakeTicketRepository.create({
-      user,
-      title: 'New Ticket',
-      status: 'open',
-      articles: [],
-    });
-
-    await expect(
-      changeResponsabile.execute({
-        agent_id: user.id,
-        ticket_id: ticket.id,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

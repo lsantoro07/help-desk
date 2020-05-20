@@ -12,6 +12,7 @@ const ticketController = new TicketController();
 const ticketResponsabilityController = new TicketResponsabilityController();
 
 ticketsRouter.post('/', ensureAuth, ticketController.create);
+ticketsRouter.get('/:ticket_id', ensureAuth, ticketController.show);
 
 // ticketsRouter.post(
 //   '/:ticket/article',
