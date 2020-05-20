@@ -18,7 +18,7 @@ class Ticket {
   id: string;
 
   @Column()
-  status: string;
+  status: 'open' | 'pending user' | 'pending responsabile' | 'close';
 
   @Column()
   title: string;

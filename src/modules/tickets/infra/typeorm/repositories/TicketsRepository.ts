@@ -24,6 +24,18 @@ class TicketRepository implements ITicketsRepository {
 
     return ticket;
   }
+
+  public async findTicketById(ticket_id: string): Promise<Ticket | undefined> {
+    const ticket = await this.ormRepository.findOne(ticket_id);
+
+    return ticket;
+  }
+
+  public async save(ticket: Ticket): Promise<Ticket> {
+    await this.ormRepository.save(ticket);
+
+    return ticket;
+  }
 }
 
 export default TicketRepository;
