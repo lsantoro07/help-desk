@@ -1,33 +1,35 @@
+import path from 'path';
 import { inject, injectable } from 'tsyringe';
-import { getRepository } from 'typeorm';
 
+import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import AppError from '@shared/errors/AppError';
 
 import Article from '@modules/tickets/infra/typeorm/entities/Article';
 import Ticket from '@modules/tickets/infra/typeorm/entities/Ticket';
-import User from '@modules/users/infra/typeorm/entities/User';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
-import IArticlesTicketRepository from '../repositories/IArticlesTicketRepository';
 import ITicketsRepository from '../repositories/ITicketsRepository';
 
 interface IRequest {
   user_id: string;
   title: string;
-  article: Article;
+  description: string;
 }
 
 @injectable()
 class CreateTicketService {
   constructor(
-    @inject('TicketsRepository')
-    private ticketsRepository: ITicketsRepository,
-    @inject('ArticlesTicketRepository')
-    private articlesRepository: IArticlesTicketRepository,
+    @inject('TicketsRepository') private ticketsRepository: ITicketsRepository,
+    @inject('UsersRepository') private usersRepository: IUsersRepository,
+    @inject('MailProvider') private mailProvider: IMailProvider,
   ) {}
 
-  public async execute({ user_id, title, article }: IRequest): Promise<Ticket> {
-    const userRepository = getRepository(User);
-    const user = await userRepository.findOne(user_id);
+  public async execute({
+    user_id,
+    title,
+    description,
+  }: IRequest): Promise<Ticket | undefined> {
+    const user = await this.usersRepository.findById(user_id);
     const articles: Article[] = [];
 
     if (!user) {
@@ -36,7 +38,7 @@ class CreateTicketService {
 
     const newArticle = new Article();
 
-    Object.assign(newArticle, { user, description: article.description });
+    Object.assign(newArticle, { user, description });
 
     articles.push(newArticle);
 
@@ -46,6 +48,32 @@ class CreateTicketService {
       status: 'open',
       articles,
     });
+
+    const newTicketTemplate = path.resolve(
+      __dirname,
+      '..',
+      'views',
+      'new_ticket_created.hbs',
+    );
+
+    const agents = await this.usersRepository.findAllAgents();
+
+    if (agents) {
+      const mailList = agents.map(agent => agent.email);
+
+      await this.mailProvider.sendMultipleMails({
+        to: mailList,
+        subject: '[help-desk] Novo ticket criado',
+        templateData: {
+          file: newTicketTemplate,
+          variables: {
+            user_name: user.name,
+            title: ticket.title,
+            description: ticket.articles[0].description,
+          },
+        },
+      });
+    }
 
     return ticket;
   }
