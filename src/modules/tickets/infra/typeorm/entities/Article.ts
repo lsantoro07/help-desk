@@ -20,9 +20,15 @@ class Article {
   @Column()
   description: string;
 
+  @Column()
+  ticket_id: string;
+
   @ManyToOne(() => Ticket, ticket => ticket.articles)
   @JoinColumn({ name: 'ticket_id' })
   ticket: Ticket;
+
+  @Column()
+  user_id: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
