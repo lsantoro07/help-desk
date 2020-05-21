@@ -5,6 +5,6 @@ import Article from '../infra/typeorm/entities/Article';
 export default interface ICreateTicketDTO {
   user: User;
   title: string;
-  status: string;
+  status: 'open' | 'pending user' | 'pending responsabile' | 'close';
   articles: Article[];
 }
