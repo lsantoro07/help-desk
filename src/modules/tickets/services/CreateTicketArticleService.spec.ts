@@ -122,7 +122,7 @@ describe('CreateArticle', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to create an article to a ticket with an agent that it is not the responsable', async () => {
+  it('should not be able to create an article to a ticket with an agent that it is not the responsible', async () => {
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
@@ -196,7 +196,7 @@ describe('CreateArticle', () => {
     expect(sendEmail).toHaveBeenCalled();
   });
 
-  it('should be able send an email to the responsable when an article is created by the user', async () => {
+  it('should be able send an email to the responsible when an article is created by the user', async () => {
     const sendEmail = jest.spyOn(fakeMailProvider, 'sendMail');
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
@@ -232,7 +232,7 @@ describe('CreateArticle', () => {
     expect(sendEmail).toHaveBeenCalled();
   });
 
-  it('should be able send an email to the user when an article is created by the responsable', async () => {
+  it('should be able send an email to the user when an article is created by the responsible', async () => {
     const sendEmail = jest.spyOn(fakeMailProvider, 'sendMail');
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
@@ -268,7 +268,7 @@ describe('CreateArticle', () => {
     expect(sendEmail).toHaveBeenCalled();
   });
 
-  it('should be able send an email to the user when an article is created by an agent and the ticket is without responsable', async () => {
+  it('should be able send an email to the user when an article is created by an agent and the ticket is without responsible', async () => {
     const sendEmail = jest.spyOn(fakeMailProvider, 'sendMail');
     const user = await fakeUsersRepository.create({
       name: 'John Doe',

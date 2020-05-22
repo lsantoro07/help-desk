@@ -3,13 +3,13 @@ import { Router } from 'express';
 import ensureAuth from '@modules/users/infra/http/middlewares/ensureAuth';
 
 import ArticlesTicketController from '../controllers/ArticlesTicketController';
-import TicketResponsabilityController from '../controllers/TicketResponsabilityController';
+import TicketResponsibilityController from '../controllers/TicketResponsibilityController';
 import TicketController from '../controllers/TicketsController';
 
 const ticketsRouter = Router();
 const ticketController = new TicketController();
 const articlesTicketController = new ArticlesTicketController();
-const ticketResponsabilityController = new TicketResponsabilityController();
+const ticketResponsibilityController = new TicketResponsibilityController();
 
 ticketsRouter.post('/', ensureAuth, ticketController.create);
 
@@ -22,9 +22,9 @@ ticketsRouter.post(
 );
 
 ticketsRouter.patch(
-  '/:ticket_id/responsabile',
+  '/:ticket_id/responsible',
   ensureAuth,
-  ticketResponsabilityController.update,
+  ticketResponsibilityController.update,
 );
 
 export default ticketsRouter;

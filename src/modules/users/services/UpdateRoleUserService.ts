@@ -9,8 +9,8 @@ import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
   user_id: string;
-  role: 'user' | 'agent' | 'admin';
-  agent_role: 'user' | 'agent' | 'admin';
+  role: 'user' | 'agent';
+  agent_role: 'user' | 'agent';
 }
 
 @injectable()

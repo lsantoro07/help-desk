@@ -67,8 +67,8 @@ export default class CreateTickets1587325694568 implements MigrationInterface {
     await queryRunner.createForeignKey(
       'tickets',
       new TableForeignKey({
-        name: 'TicketResposibleUserId',
-        columnNames: ['resposible_user_id'],
+        name: 'TicketResponsibleUserId',
+        columnNames: ['responsible_user_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
       }),
@@ -76,7 +76,7 @@ export default class CreateTickets1587325694568 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('tickets', 'TicketResposibleUserId');
+    await queryRunner.dropForeignKey('tickets', 'TicketResponsibleUserId');
     await queryRunner.dropForeignKey('tickets', 'TicketUserId');
     await queryRunner.dropTable('tickets');
   }

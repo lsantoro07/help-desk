@@ -30,7 +30,7 @@ describe('UpdateRoleUser', () => {
       name: 'Jonh Tre',
       email: 'jonhtre@example.com',
       password: '123456',
-      role: 'admin',
+      role: 'agent',
     });
 
     const updatedUser = await updateRoleUser.execute({

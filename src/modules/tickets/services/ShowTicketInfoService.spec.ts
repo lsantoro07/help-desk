@@ -41,7 +41,7 @@ describe('ShowTicket', () => {
     expect(ticketInfo).toEqual(ticket);
   });
 
-  it('should not be able to show the ticket information when the user is not the owner nor an agent or responsable', async () => {
+  it('should not be able to show the ticket information when the user is not the owner nor an agent or responsible', async () => {
     const user = await fakeUsersRepository.create({
       name: 'Jonh Doe',
       email: 'jonhdoe@example.com',

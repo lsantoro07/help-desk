@@ -13,7 +13,7 @@ interface IRequest {
 }
 
 @injectable()
-class ChangeTicketResponsableService {
+class ChangeTicketResponsibleService {
   constructor(
     @inject('TicketsRepository') private ticketsRepository: ITicketsRepository,
     @inject('UsersRepository') private usersRepository: IUsersRepository,
@@ -43,4 +43,4 @@ class ChangeTicketResponsableService {
   }
 }
 
-export default ChangeTicketResponsableService;
+export default ChangeTicketResponsibleService;
