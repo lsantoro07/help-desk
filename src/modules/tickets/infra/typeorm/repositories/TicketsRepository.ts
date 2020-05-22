@@ -31,6 +31,25 @@ class TicketRepository implements ITicketsRepository {
     return ticket;
   }
 
+  public async findAllTicketsByUser(user_id: string): Promise<Ticket[]> {
+    const tickets = await this.ormRepository.find({
+      where: { user_id },
+    });
+
+    return tickets;
+  }
+
+  public async findAllUsersTicketsByStatus(
+    status: string,
+    user_id: string,
+  ): Promise<Ticket[]> {
+    const tickets = await this.ormRepository.find({
+      where: { status, user_id },
+    });
+
+    return tickets;
+  }
+
   public async save(ticket: Ticket): Promise<Ticket> {
     await this.ormRepository.save(ticket);
 

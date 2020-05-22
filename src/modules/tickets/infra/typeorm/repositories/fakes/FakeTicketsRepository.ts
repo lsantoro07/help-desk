@@ -24,6 +24,26 @@ class TicketRepository implements ITicketsRepository {
     return ticket;
   }
 
+  public async findAllTicketsByUser(user_id: string): Promise<Ticket[]> {
+    const tickets = this.tickets.filter(
+      findTicket => findTicket.user.id === user_id,
+    );
+
+    return tickets;
+  }
+
+  public async findAllUsersTicketsByStatus(
+    status: string,
+    user_id: string,
+  ): Promise<Ticket[]> {
+    const tickets = this.tickets.filter(
+      findTicket =>
+        findTicket.status === status && findTicket.user.id === user_id,
+    );
+
+    return tickets;
+  }
+
   public async save(ticket: Ticket): Promise<Ticket> {
     const index = this.tickets.findIndex(
       findTicket => findTicket.id === ticket.id,
