@@ -30,7 +30,7 @@ class User {
   avatar: string;
 
   @Column()
-  role: 'user' | 'agent' | 'admin';
+  role: 'user' | 'agent';
 
   @OneToMany(() => Article, article => article.ticket)
   articles: Article[];

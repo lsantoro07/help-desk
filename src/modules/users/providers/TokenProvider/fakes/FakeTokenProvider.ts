@@ -2,7 +2,7 @@ import ITokenProvider from '../models/ITokenProvider';
 
 interface IAuthUser {
   user_id: string;
-  role: 'user' | 'agent' | 'admin';
+  role: 'user' | 'agent';
 }
 
 export default class JWTTokenProvider implements ITokenProvider {

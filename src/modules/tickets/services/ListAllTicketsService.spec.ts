@@ -1,5 +1,3 @@
-// import AppError from '@shared/errors/AppError';
-
 import AppError from '@shared/errors/AppError';
 
 import FakeUsersRepository from '@modules/users/infra/typeorm/repositories/fakes/FakeUsersRepository';

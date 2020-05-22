@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import ChangeTicketResponsableService from '@modules/tickets/services/ChangeTicketResponsableService';
+import ChangeTicketResponsibleService from '@modules/tickets/services/ChangeTicketResponsibleService';
 
 export default class TicketsController {
   public async update(request: Request, response: Response): Promise<Response> {
@@ -9,9 +9,9 @@ export default class TicketsController {
 
     const { ticket_id } = request.params;
 
-    const changeResponsable = container.resolve(ChangeTicketResponsableService);
+    const changeResponsible = container.resolve(ChangeTicketResponsibleService);
 
-    const ticket = await changeResponsable.execute({
+    const ticket = await changeResponsible.execute({
       agent_id: user_id,
       ticket_id,
     });

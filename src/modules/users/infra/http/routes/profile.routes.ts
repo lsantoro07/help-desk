@@ -9,7 +9,7 @@ import UserAvatarController from '../controllers/UserAvatarController';
 import ensureAuth from '../middlewares/ensureAuth';
 
 const upload = multer(uploadConfig.multer);
-const upadateAvatar = new UserAvatarController();
+const updateAvatar = new UserAvatarController();
 
 const profileRouter = Router();
 const profileController = new ProfileController();
@@ -31,6 +31,6 @@ profileRouter.put(
   profileController.update,
 );
 
-profileRouter.patch('/avatar', upload.single('avatar'), upadateAvatar.update);
+profileRouter.patch('/avatar', upload.single('avatar'), updateAvatar.update);
 
 export default profileRouter;

@@ -42,7 +42,7 @@ describe('ListTicketsByStatus', () => {
     await fakeTicketRepository.create({
       user,
       title: 'New Ticket',
-      status: 'close',
+      status: 'closed',
       articles: [],
     });
 
