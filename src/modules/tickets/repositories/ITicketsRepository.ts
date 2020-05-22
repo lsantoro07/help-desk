@@ -5,6 +5,8 @@ export default interface ITicketsRepository {
   create(data: ICreateTicketDTO): Promise<Ticket>;
   findTicketById(ticket_id: string): Promise<Ticket | undefined>;
   findAllTicketsByUser(user_id: string): Promise<Ticket[]>;
+  findAllTickets(): Promise<Ticket[]>;
+  findAllTicketsByStatus(status: string): Promise<Ticket[]>;
   findAllUsersTicketsByStatus(
     status: string,
     user_id: string,

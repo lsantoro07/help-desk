@@ -39,12 +39,26 @@ class TicketRepository implements ITicketsRepository {
     return tickets;
   }
 
+  public async findAllTickets(): Promise<Ticket[]> {
+    const tickets = await this.ormRepository.find();
+
+    return tickets;
+  }
+
   public async findAllUsersTicketsByStatus(
     status: string,
     user_id: string,
   ): Promise<Ticket[]> {
     const tickets = await this.ormRepository.find({
       where: { status, user_id },
+    });
+
+    return tickets;
+  }
+
+  public async findAllTicketsByStatus(status: string): Promise<Ticket[]> {
+    const tickets = await this.ormRepository.find({
+      where: { status },
     });
 
     return tickets;

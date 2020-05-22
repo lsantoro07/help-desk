@@ -32,6 +32,10 @@ class TicketRepository implements ITicketsRepository {
     return tickets;
   }
 
+  public async findAllTickets(): Promise<Ticket[]> {
+    return this.tickets;
+  }
+
   public async findAllUsersTicketsByStatus(
     status: string,
     user_id: string,
@@ -39,6 +43,14 @@ class TicketRepository implements ITicketsRepository {
     const tickets = this.tickets.filter(
       findTicket =>
         findTicket.status === status && findTicket.user.id === user_id,
+    );
+
+    return tickets;
+  }
+
+  public async findAllTicketsByStatus(status: string): Promise<Ticket[]> {
+    const tickets = this.tickets.filter(
+      findTicket => findTicket.status === status,
     );
 
     return tickets;

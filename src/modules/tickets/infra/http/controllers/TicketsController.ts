@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import CreateTicketService from '@modules/tickets/services/CreateTicketService';
+import ListAllTicketsService from '@modules/tickets/services/ListAllTicketsService';
 import ShowTicketInfoService from '@modules/tickets/services/ShowTicketInfoService';
 
 export default class TicketsController {
@@ -35,5 +36,17 @@ export default class TicketsController {
     });
 
     return response.json(ticket);
+  }
+
+  public async index(request: Request, response: Response): Promise<Response> {
+    const { role } = request.user;
+
+    const createTicket = container.resolve(ListAllTicketsService);
+
+    const tickets = await createTicket.execute({
+      role,
+    });
+
+    return response.json(tickets);
   }
 }
