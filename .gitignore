@@ -8,3 +8,4 @@ temp/
 .env
 ormconfig.json
 coverage
+dist
